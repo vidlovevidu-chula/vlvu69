@@ -1,24 +1,24 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 
 const schedule = [
-	{ time: '09:00 - 10:00', name: 'Opening Ceremony' },
-	{ time: '10:30', name: 'Keynote: VidLove' }
+	{ time: "09:00 - 10:00", name: "Opening Ceremony" },
+	{ time: "10:30", name: "Keynote: VidLove" },
 ];
 
 const now = new Date();
 
-function parseToday(timeStr) {
-	const [hh, mm] = timeStr.split(':').map(Number);
+function parseToday(timeStr: string) {
+	const [hh, mm] = timeStr.split(":").map(Number);
 	return new Date(now.getFullYear(), now.getMonth(), now.getDate(), hh, mm);
 }
 
-function eventState(ev) {
+function eventState(ev: { time: string; name: string }) {
 	const start = parseToday(ev.time);
 	const end = new Date(start.getTime() + 60 * 60 * 1000); // 60 min duration
-	if (now >= start && now < end) return 'current';
-	if (now >= end) return 'passed';
-	return 'upcoming';
+	if (now >= start && now < end) return "current";
+	if (now >= end) return "passed";
+	return "upcoming";
 }
 ---
 
@@ -28,8 +28,10 @@ function eventState(ev) {
 		<section class="panel hero" id="home">
 			<div class="container">
 				<h1 class="title">VidLoveVidU2026</h1>
-				<div class="image placeholder" aria-hidden="true">Image placeholder</div>
-				<a class="btn" href="#registration">Register Now</a>
+				<div class="image placeholder" aria-hidden="true">
+					Image placeholder
+				</div>
+				<a class="btn" href="/register">Register Now</a>
 			</div>
 		</section>
 
@@ -37,7 +39,9 @@ function eventState(ev) {
 		<section class="panel map" id="map">
 			<div class="container">
 				<h2>แผนผังงาน (Map)</h2>
-				<div class="image large placeholder" aria-hidden="true">Map placeholder — add image here</div>
+				<div class="image large placeholder" aria-hidden="true">
+					Map placeholder — add image here
+				</div>
 			</div>
 		</section>
 
@@ -51,15 +55,17 @@ function eventState(ev) {
 							<tr><th>Time</th><th>Event</th></tr>
 						</thead>
 						<tbody>
-							{schedule.map(ev => {
-								const state = eventState(ev);
-								return (
-									<tr class={state}>
-										<td>{ev.time}</td>
-										<td>{ev.name}</td>
-									</tr>
-								);
-							})}
+							{
+								schedule.map((ev) => {
+									const state = eventState(ev);
+									return (
+										<tr class={state}>
+											<td>{ev.time}</td>
+											<td>{ev.name}</td>
+										</tr>
+									);
+								})
+							}
 						</tbody>
 					</table>
 				</div>
@@ -81,64 +87,423 @@ function eventState(ev) {
 	<!-- Sticky bottom nav -->
 	<nav class="bottom-nav" role="navigation" aria-label="Primary">
 		<button data-target="#home" title="Home">
-			<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3l9 8h-3v8h-12v-8h-3z"></path></svg>
+			<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+				><path fill="currentColor" d="M12 3l9 8h-3v8h-12v-8h-3z"
+				></path></svg
+			>
 			<span>Home</span>
 		</button>
 		<button data-target="#registration" title="Registration">
-			<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"/></svg>
+			<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+				><path
+					fill="currentColor"
+					d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"
+				></path></svg
+			>
 			<span>Registration</span>
 		</button>
 		<button data-target="#games" title="Games">
-			<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/></svg>
+			<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+				><path
+					fill="currentColor"
+					d="M12 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"></path></svg
+			>
 			<span>Games</span>
 		</button>
 	</nav>
 
 	<!-- Registration anchor (target for button) -->
-	<div id="registration" class="hidden-anchor">Registration section (link target)</div>
+	<div id="registration" class="hidden-anchor">
+		Registration section (link target)
+	</div>
 </Layout>
 
 <style>
-	:root{--bg:#0f1724;--panel:#0b1220;--accent:#ff6b6b;--muted:#7b8693}
-	/* Hide native scrollbar and prevent default page scrolling; we'll control navigation via script */
-	html,body{height:100%;overflow:hidden}
-	.site{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;margin:0}
-	.panel{min-height:100vh;display:flex;align-items:center;justify-content:center;color:#eef2f7;padding:2rem}
-	.hero{background:linear-gradient(180deg,#0b1220, #071025);text-align:center}
-	.map{background:linear-gradient(180deg,#071025,#0b1220)}
-	.schedule{background:#071428}
-	.sponsors{background:#08131f}
-	.container{width:100%;max-width:1000px}
-	.title{font-size:clamp(2rem,6vw,4rem);margin:0 0 1rem}
-	.image.placeholder{width:100%;height:220px;background:linear-gradient(90deg,#092032,#113049);display:flex;align-items:center;justify-content:center;color:var(--muted);border-radius:8px}
-	.image.large{height:60vh}
-	.btn{display:inline-block;margin-top:1rem;padding:.75rem 1.2rem;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none}
+	/* Import cute, rounded Google Font */
+	@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap");
 
-	/* Table */
-	.table-wrap{overflow:auto;margin-top:1rem}
-	table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden}
-	th,td{padding:.9rem 1rem;text-align:left}
-	tbody tr.upcoming{color:#e6eef8}
-	tbody tr.current{background:linear-gradient(90deg,rgba(255,107,107,0.12),rgba(255,107,107,0.04));color:#fff;font-weight:600}
-	tbody tr.passed{color:var(--muted);opacity:.6}
+	:root {
+		/* Pink-based palette */
+		--soft-pink: #ffc8dd;
+		--rose: #ffafcc;
+		--pastel-red: #ff9bb8;
+		--deep-rose: #e63980;
+		--white-accent: #ffffff;
+		--cream: #fff5f8;
+		--pink-shadow: rgba(255, 175, 204, 0.3);
 
-	.sponsor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-top:1rem}
-	.sponsor.placeholder{height:100px;background:linear-gradient(90deg,#0a2230,#123147);display:flex;align-items:center;justify-content:center;border-radius:8px;color:var(--muted)}
+		/* Text colors with good contrast */
+		--text-dark: #5d1f3c;
+		--text-medium: #8b2f5a;
+		--text-light: #fff5f8;
+	}
 
-	/* Bottom nav */
-	.bottom-nav{position:fixed;left:0;right:0;bottom:12px;margin:0 auto;max-width:800px;background:rgba(7,12,18,0.8);backdrop-filter:blur(6px);display:flex;gap:8px;padding:8px;border-radius:12px;justify-content:space-around}
-	.bottom-nav button{background:transparent;border:0;color:#dbe7f5;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 10px;border-radius:8px}
-	.bottom-nav button:hover{background:rgba(255,255,255,0.03)}
-	.bottom-nav svg{display:block}
+	/* Hide native scrollbar and prevent default page scrolling */
+	html,
+	body {
+		height: 100%;
+		overflow: hidden;
+	}
 
-	.hidden-anchor{position:relative;top:-60px}
+	.site {
+		font-family:
+			"Nunito",
+			"Quicksand",
+			-apple-system,
+			BlinkMacSystemFont,
+			"Segoe UI",
+			sans-serif;
+		margin: 0;
+		position: relative;
+	}
 
-	@media(min-width:700px){.container{padding:0 1rem}}
+	/* Romantic background with subtle decorative elements */
+	.site::before {
+		content: "";
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		background:
+			radial-gradient(
+				circle at 20% 80%,
+				rgba(255, 175, 204, 0.15) 0%,
+				transparent 50%
+			),
+			radial-gradient(
+				circle at 80% 20%,
+				rgba(255, 200, 221, 0.15) 0%,
+				transparent 50%
+			),
+			linear-gradient(135deg, #fff0f5 0%, #ffe4f0 50%, #ffd6e8 100%);
+	}
+
+	/* Subtle heart pattern overlay */
+	.site::after {
+		content: "♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡";
+		position: fixed;
+		top: 10%;
+		left: 0;
+		width: 100%;
+		text-align: center;
+		font-size: clamp(1.5rem, 3vw, 2.5rem);
+		color: rgba(255, 175, 204, 0.08);
+		letter-spacing: 2rem;
+		z-index: -1;
+		pointer-events: none;
+	}
+
+	.panel {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		/* Mobile-first: position content higher on screen */
+		justify-content: flex-start;
+		padding: 1.5rem;
+		padding-top: 2rem;
+		position: relative;
+	}
+
+	.hero {
+		background: linear-gradient(
+			160deg,
+			#fff5f8 0%,
+			#ffe4f0 50%,
+			#ffd6e8 100%
+		);
+		text-align: center;
+	}
+
+	/* Non-hero sections: push content higher on mobile */
+	.map,
+	.schedule,
+	.sponsors {
+		align-items: flex-start;
+	}
+
+	.map {
+		background: linear-gradient(180deg, #ffd6e8 0%, #ffe4f0 100%);
+	}
+
+	.schedule {
+		background: linear-gradient(160deg, #ffe4f0 0%, #fff0f5 100%);
+	}
+
+	.sponsors {
+		background: linear-gradient(180deg, #fff0f5 0%, #fff5f8 100%);
+	}
+
+	.container {
+		width: 100%;
+		max-width: 1000px;
+	}
+
+	.title {
+		font-size: clamp(2rem, 8vw, 3.5rem);
+		font-weight: 700;
+		margin: 0 0 1.5rem;
+		color: var(--text-dark);
+		font-family: "Quicksand", sans-serif;
+		letter-spacing: 0.5px;
+		text-shadow: 2px 2px 8px var(--pink-shadow);
+		line-height: 1.2;
+	}
+
+	h2 {
+		font-size: clamp(1.5rem, 5vw, 2.25rem);
+		font-weight: 700;
+		color: var(--text-dark);
+		font-family: "Quicksand", sans-serif;
+		margin: 0 0 1.5rem;
+	}
+
+	.image.placeholder {
+		width: 100%;
+		height: 220px;
+		background: linear-gradient(135deg, #ffafcc 0%, #ffc8dd 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--text-medium);
+		border-radius: 20px;
+		font-size: 0.9rem;
+		box-shadow: 0 8px 20px var(--pink-shadow);
+	}
+
+	.image.large {
+		height: 60vh;
+		max-height: 500px;
+	}
+
+	/* Large, tap-friendly button for mobile */
+	.btn {
+		display: inline-block;
+		margin-top: 1.5rem;
+		padding: 1rem 2rem;
+		background: linear-gradient(135deg, #ff9bb8 0%, #e63980 100%);
+		color: var(--white-accent);
+		border-radius: 50px;
+		text-decoration: none;
+		font-weight: 700;
+		font-size: 1.1rem;
+		box-shadow: 0 6px 20px rgba(230, 57, 128, 0.4);
+		transition: all 0.25s ease;
+		min-width: 200px;
+		text-align: center;
+		cursor: pointer;
+	}
+
+	.btn:hover,
+	.btn:active {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 25px rgba(230, 57, 128, 0.5);
+	}
+
+	/* Table styling */
+	.table-wrap {
+		overflow: auto;
+		margin-top: 1rem;
+		border-radius: 16px;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		background: rgba(255, 255, 255, 0.7);
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 4px 15px var(--pink-shadow);
+	}
+
+	th,
+	td {
+		padding: 1rem 1.25rem;
+		text-align: left;
+		font-size: 1rem;
+	}
+
+	th {
+		background: linear-gradient(135deg, #ffafcc 0%, #ffc8dd 100%);
+		color: var(--text-dark);
+		font-weight: 700;
+	}
+
+	tbody tr {
+		border-bottom: 1px solid rgba(255, 175, 204, 0.2);
+	}
+
+	tbody tr:last-child {
+		border-bottom: none;
+	}
+
+	tbody tr.upcoming {
+		color: var(--text-dark);
+	}
+
+	tbody tr.current {
+		background: linear-gradient(
+			90deg,
+			rgba(230, 57, 128, 0.15),
+			rgba(255, 155, 184, 0.1)
+		);
+		color: var(--text-dark);
+		font-weight: 600;
+	}
+
+	tbody tr.passed {
+		color: var(--text-medium);
+		opacity: 0.5;
+	}
+
+	.sponsor-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+
+	.sponsor.placeholder {
+		height: 100px;
+		background: linear-gradient(135deg, #ffc8dd 0%, #ffafcc 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 16px;
+		color: var(--text-medium);
+		box-shadow: 0 4px 12px var(--pink-shadow);
+		font-size: 0.9rem;
+	}
+
+	/* Mobile-first bottom nav - large tap targets */
+	.bottom-nav {
+		position: fixed;
+		left: 12px;
+		right: 12px;
+		bottom: 16px;
+		margin: 0 auto;
+		max-width: 500px;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(12px);
+		display: flex;
+		gap: 6px;
+		padding: 10px;
+		border-radius: 24px;
+		justify-content: space-around;
+		box-shadow: 0 8px 30px var(--pink-shadow);
+		border: 2px solid rgba(255, 175, 204, 0.3);
+	}
+
+	.bottom-nav button {
+		background: transparent;
+		border: 0;
+		color: var(--text-dark);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		padding: 12px 16px;
+		border-radius: 16px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		transition: all 0.2s ease;
+		cursor: pointer;
+		min-width: 70px;
+		/* Large tap target for mobile */
+		min-height: 60px;
+	}
+
+	.bottom-nav button:hover,
+	.bottom-nav button:active {
+		background: linear-gradient(135deg, #ffafcc 0%, #ffc8dd 100%);
+		transform: scale(1.05);
+	}
+
+	.bottom-nav svg {
+		display: block;
+		filter: drop-shadow(0 2px 4px var(--pink-shadow));
+	}
+
+	.hidden-anchor {
+		position: relative;
+		top: -80px;
+	}
+
+	/* Mobile optimizations */
+	@media (max-width: 600px) {
+		.panel {
+			padding: 1rem;
+		}
+
+		.title {
+			margin-bottom: 1rem;
+		}
+
+		h2 {
+			margin-bottom: 1rem;
+		}
+
+		.btn {
+			padding: 1.1rem 2rem;
+			font-size: 1rem;
+			width: 100%;
+			max-width: 300px;
+		}
+
+		th,
+		td {
+			padding: 0.85rem 0.75rem;
+			font-size: 0.9rem;
+		}
+
+		.bottom-nav {
+			left: 8px;
+			right: 8px;
+			bottom: 12px;
+			padding: 8px;
+		}
+
+		.bottom-nav button {
+			padding: 10px 8px;
+			min-width: 60px;
+			font-size: 0.7rem;
+			gap: 4px;
+		}
+	}
+
+	/* Larger screens */
+	@media (min-width: 700px) {
+		.panel {
+			/* Desktop: recenter content vertically */
+			justify-content: center;
+			padding-top: 1.5rem;
+		}
+
+		/* Desktop: recenter non-hero sections */
+		.map,
+		.schedule,
+		.sponsors {
+			align-items: center;
+		}
+
+		.container {
+			padding: 0 2rem;
+		}
+
+		.bottom-nav {
+			max-width: 600px;
+		}
+
+		.btn:hover {
+			transform: translateY(-3px) scale(1.02);
+		}
+	}
 </style>
 
 <script type="module">
 	// Full-page scroll behavior: wheel & touch -> navigate between .panel sections
-	const panels = Array.from(document.querySelectorAll('.panel'));
+	const panels = Array.from(document.querySelectorAll(".panel"));
 	if (panels.length === 0) {
 		// nothing to do
 	} else {
@@ -149,60 +514,79 @@ function eventState(ev) {
 		function goTo(i) {
 			if (i < 0 || i >= panels.length) return;
 			isScrolling = true;
-			panels[i].scrollIntoView({ behavior: 'smooth' });
-			setTimeout(() => { isScrolling = false; idx = i; }, scrollDuration);
+			panels[i].scrollIntoView({ behavior: "smooth" });
+			setTimeout(() => {
+				isScrolling = false;
+				idx = i;
+			}, scrollDuration);
 		}
 
 		// Wheel handling
 		let wheelTimeout;
-		window.addEventListener('wheel', (e) => {
-			if (isScrolling) return;
-			clearTimeout(wheelTimeout);
-			wheelTimeout = setTimeout(() => {}, 50);
-			const delta = e.deltaY;
-			if (Math.abs(delta) < 10) return;
-			if (delta > 0) goTo(Math.min(idx + 1, panels.length - 1));
-			else goTo(Math.max(idx - 1, 0));
-		}, { passive: true });
+		window.addEventListener(
+			"wheel",
+			(e) => {
+				if (isScrolling) return;
+				clearTimeout(wheelTimeout);
+				wheelTimeout = setTimeout(() => {}, 50);
+				const delta = e.deltaY;
+				if (Math.abs(delta) < 10) return;
+				if (delta > 0) goTo(Math.min(idx + 1, panels.length - 1));
+				else goTo(Math.max(idx - 1, 0));
+			},
+			{ passive: true },
+		);
 
 		// Touch handling
 		let touchStartY = null;
-		window.addEventListener('touchstart', (e) => {
-			touchStartY = e.touches ? e.touches[0].clientY : null;
-		}, { passive: true });
-		window.addEventListener('touchend', (e) => {
-			if (touchStartY == null) return;
-			const touchEndY = e.changedTouches ? e.changedTouches[0].clientY : null;
-			if (touchEndY == null) return;
-			const diff = touchStartY - touchEndY;
-			if (Math.abs(diff) < 40) return;
-			if (diff > 0) goTo(Math.min(idx + 1, panels.length - 1));
-			else goTo(Math.max(idx - 1, 0));
-			touchStartY = null;
-		}, { passive: true });
+		window.addEventListener(
+			"touchstart",
+			(e) => {
+				touchStartY = e.touches ? e.touches[0].clientY : null;
+			},
+			{ passive: true },
+		);
+		window.addEventListener(
+			"touchend",
+			(e) => {
+				if (touchStartY == null) return;
+				const touchEndY = e.changedTouches
+					? e.changedTouches[0].clientY
+					: null;
+				if (touchEndY == null) return;
+				const diff = touchStartY - touchEndY;
+				if (Math.abs(diff) < 40) return;
+				if (diff > 0) goTo(Math.min(idx + 1, panels.length - 1));
+				else goTo(Math.max(idx - 1, 0));
+				touchStartY = null;
+			},
+			{ passive: true },
+		);
 
 		// Buttons in bottom nav
-		document.querySelectorAll('.bottom-nav button[data-target]').forEach(btn => {
-			btn.addEventListener('click', () => {
-				const target = btn.dataset.target;
-				const el = document.querySelector(target);
-				if (el) {
-					const i = panels.indexOf(el);
-					if (i >= 0) goTo(i);
-				}
+		document
+			.querySelectorAll(".bottom-nav button[data-target]")
+			.forEach((btn) => {
+				btn.addEventListener("click", () => {
+					const target = btn.dataset.target;
+					const el = document.querySelector(target);
+					if (el) {
+						const i = panels.indexOf(el);
+						if (i >= 0) goTo(i);
+					}
+				});
 			});
-		});
 
 		// Support hash navigation (if user sets location.hash)
 		function hashToIndex() {
-			const id = location.hash ? location.hash.replace('#','') : null;
+			const id = location.hash ? location.hash.replace("#", "") : null;
 			if (!id) return;
 			const el = document.getElementById(id);
 			if (!el) return;
 			const i = panels.indexOf(el);
 			if (i >= 0) goTo(i);
 		}
-		window.addEventListener('hashchange', hashToIndex);
+		window.addEventListener("hashchange", hashToIndex);
 
 		// Initialize: ensure first panel in view
 		panels[0].scrollIntoView();
