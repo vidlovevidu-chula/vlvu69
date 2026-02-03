@@ -3,387 +3,383 @@
 ---
 
 <html lang="th">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ลงทะเบียนเข้างาน</title>
-</head>
-<body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>ลงทะเบียนเข้างาน</title>
+    </head>
+    <body>
+        <main class="container">
+            <h1>ลงทะเบียนเข้างาน</h1>
 
-<main class="container">
-    <h1>ลงทะเบียนเข้างาน</h1>
+            <form id="registerForm">
+                <div class="center-text">
+                    <p class="label-heading">
+                        คุณเป็นนิสิตจุฬาปัจจุบันใช่หรือไม่?
+                    </p>
 
-    <form id="registerForm">
-        <div class="center-text">
-            <p class="label-heading">คุณเป็นนิสิตจุฬาปัจจุบันใช่หรือไม่?</p>
-            
-            <div class="toggle-group">
-                <input 
-                    type="radio" 
-                    name="เป็นนิสิต"
-                    id="isStudentYes" 
-                    value="ใช่"
-                    checked 
-                />
-                <label 
-                    for="isStudentYes" 
-                    class="toggle-btn"
-                >
-                ใช่ </label>
+                    <div class="toggle-group">
+                        <input
+                            type="radio"
+                            name="เป็นนิสิต"
+                            id="isStudentYes"
+                            value="ใช่"
+                            checked
+                        />
+                        <label for="isStudentYes" class="toggle-btn">
+                            ใช่
+                        </label>
 
-                <input 
-                    type="radio" 
-                    name="เป็นนิสิต" 
-                    id="isStudentNo" 
-                    value="ไม่ใช่"
-                />
-                <label 
-                    for="isStudentNo" 
-                    class="toggle-btn"
-                >ไม่ใช่</label>
-            </div>
-
-        </div>
-
-        <hr />
-
-        <div>
-            {/* --- ชื่อ นามสกุล --- */}
-            <div class="form-group">
-                <label for="fullname">ชื่อ - นามสกุล</label>
-                <input 
-                    type="text" 
-                    id="fullname" 
-                    name="ชื่อ-นามสกุล" 
-                    placeholder="เช่น วิศเลิฟ วิทย์ยู" 
-                    required 
-                />
-            </div>
-
-            {/* ------ ส่วนที่เป็นนิสิต ------ */}
-            <div id="studentFields">
-                <div class="form-group">
-                    <label for="studentId">รหัสนิสิต</label>
-                    <input 
-                        type="text" 
-                        id="studentId" 
-                        name="รหัสนิสิต" 
-                        placeholder="กรอกรหัสนิสิต 10 หลัก" 
-                        pattern="[0-9]{10}"
-                        inputmode="numeric"
-                    />
+                        <input
+                            type="radio"
+                            name="เป็นนิสิต"
+                            id="isStudentNo"
+                            value="ไม่ใช่"
+                        />
+                        <label for="isStudentNo" class="toggle-btn"
+                            >ไม่ใช่</label
+                        >
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="faculty">คณะ</label>
-                    <input 
-                        type="text" 
-                        id="faculty" 
-                        name="คณะ" 
-                        placeholder="เช่น วิศวกรรมศาสตร์" 
-                    />
+                <hr />
+
+                <div>
+                    {/* --- ชื่อ นามสกุล --- */}
+                    <div class="form-group">
+                        <label for="fullname">ชื่อ - นามสกุล</label>
+                        <input
+                            type="text"
+                            id="fullname"
+                            name="ชื่อ-นามสกุล"
+                            placeholder="เช่น วิศเลิฟ วิทย์ยู"
+                            required
+                        />
+                    </div>
+
+                    {/* ------ ส่วนที่เป็นนิสิต ------ */}
+                    <div id="studentFields">
+                        <div class="form-group">
+                            <label for="studentId">รหัสนิสิต</label>
+                            <input
+                                type="text"
+                                id="studentId"
+                                name="รหัสนิสิต"
+                                placeholder="กรอกรหัสนิสิต 10 หลัก"
+                                pattern="[0-9]{10}"
+                                inputmode="numeric"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="faculty">คณะ</label>
+                            <input
+                                type="text"
+                                id="faculty"
+                                name="คณะ"
+                                placeholder="เช่น วิศวกรรมศาสตร์"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="year">ชั้นปี</label>
+                            <select id="year" name="ชั้นปี">
+                                <option value="" disabled selected
+                                    >เลือกชั้นปี</option
+                                >
+                                <option value="1">ปี 1</option>
+                                <option value="2">ปี 2</option>
+                                <option value="3">ปี 3</option>
+                                <option value="4">ปี 4</option>
+                                <option value="other">อื่นๆ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* --- เพศ --- */}
+                    <div class="form-group">
+                        <label for="gender">เพศ</label>
+                        <select id="gender" name="เพศ" required>
+                            <option value="" disabled selected>ระบุเพศ</option>
+                            <option value="ชาย">ชาย</option>
+                            <option value="หญิง">หญิง</option>
+                            <option value="lgbtq">LGBTQ+</option>
+                            <option value="ไม่ระบุ">ไม่ระบุ</option>
+                        </select>
+                    </div>
+
+                    {/* --- เบอร์โทร --- */}
+                    <div class="form-group">
+                        <label for="phone">เบอร์โทรศัพท์</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="เบอร์โทร"
+                            placeholder="0xxxxxxxxx"
+                            pattern="[0-9]{10}"
+                            required
+                        />
+                    </div>
+
+                    {/* --- วิธีเดินทาง --- */}
+                    <div class="form-group">
+                        <label for="transport">วิธีการเดินทาง</label>
+                        <select id="transport" name="การเดินทาง" required>
+                            <option value="" disabled selected
+                                >เลือกวิธีการเดินทาง</option
+                            >
+                            <option value="เดิน">เดิน</option>
+                            <option value="จักรยาน">จักรยาน</option>
+                            <option value="จักรยานยนต์">จักรยานยนต์</option>
+                            <option value="รถประจำทาง">รถโดยสารประจำทาง</option>
+                            <option value="รถส่วนตัว">รถส่วนตัว</option>
+                            <option value="รถไฟฟ้า">รถไฟฟ้า</option>
+                            <option value="อื่นๆ">อื่นๆ</option>
+                        </select>
+                    </div>
+
+                    <div class="flex column">
+                        <label>สถานะ</label>
+
+                        <div class="toggle-group">
+                            <input
+                                type="radio"
+                                name="สถานะ"
+                                id="single"
+                                value="โสด"
+                                checked
+                            />
+                            <label for="single" class="toggle-btn"> โสด </label>
+
+                            <input
+                                type="radio"
+                                name="สถานะ"
+                                id="taken"
+                                value="มีแฟนแล้ว"
+                            />
+                            <label for="taken" class="toggle-btn taken"
+                                >มีแฟน</label
+                            >
+
+                            <input
+                                type="radio"
+                                name="สถานะ"
+                                id="secret"
+                                value="???"
+                            />
+                            <label for="secret" class="toggle-btn secret"
+                                >???</label
+                            >
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="year">ชั้นปี</label>
-                    <select id="year" name="ชั้นปี">
-                        <option value="" disabled selected>เลือกชั้นปี</option>
-                        <option value="1">ปี 1</option>
-                        <option value="2">ปี 2</option>
-                        <option value="3">ปี 3</option>
-                        <option value="4">ปี 4</option>
-                        <option value="other">อื่นๆ</option>
-                    </select>
+                {/* --- ปุ่มลงทะเบียน --- */}
+                <div>
+                    <button type="submit" class="btn-submit">ลงทะเบียน</button>
                 </div>
-            </div>
+            </form>
+        </main>
 
-            {/* --- เพศ --- */}
-            <div class="form-group">
-                <label for="gender">เพศ</label>
-                <select id="gender" name="เพศ" required>
-                    <option value="" disabled selected>ระบุเพศ</option>
-                    <option value="ชาย">ชาย</option>
-                    <option value="หญิง">หญิง</option>
-                    <option value="lgbtq">LGBTQ+</option>
-                    <option value="ไม่ระบุ">ไม่ระบุ</option>
-                </select>
-            </div>
+        <style>
+            body {
+                /*font-family: 'Sarabun', sans-serif;*/
+                padding: 20px;
+                background-color: #ffd6e8;
+                color: #333;
+            }
 
-            {/* --- เบอร์โทร --- */}
-            <div class="form-group">
-                <label for="phone">เบอร์โทรศัพท์</label>
-                <input 
-                    type="tel" 
-                    id="phone" 
-                    name="เบอร์โทร" 
-                    placeholder="0xxxxxxxxx" 
-                    pattern="[0-9]{10}"
-                    required 
-                />
-            </div>
+            .flex.column {
+                display: flex;
+                flex-direction: column;
+            }
 
-            {/* --- วิธีเดินทาง --- */}
-            <div class="form-group">
-                <label for="transport">วิธีการเดินทาง</label>
-                <select id="transport" name="การเดินทาง" required>
-                    <option value="" disabled selected>เลือกวิธีการเดินทาง</option>
-                    <option value="เดิน">เดิน</option>
-                    <option value="จักรยาน">จักรยาน</option>
-                    <option value="จักรยานยนต์">จักรยานยนต์</option>
-                    <option value="รถประจำทาง">รถโดยสารประจำทาง</option>
-                    <option value="รถส่วนตัว">รถส่วนตัว</option>
-                    <option value="รถไฟฟ้า">รถไฟฟ้า</option>
-                    <option value="อื่นๆ">อื่นๆ</option>
-                </select>
-            </div>
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+                background: white;
+                padding: 25px;
+                border-radius: 16px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
 
-            <div class="flex column">
-                <label >สถานะ</label>
-                
-                <div class="toggle-group">
-                    
-                    <input 
-                        type="radio" 
-                        name="สถานะ" 
-                        id="single" 
-                        value="โสด" 
-                        checked 
-                    />
-                    <label 
-                        for="single" 
-                        class="toggle-btn"
-                    >
-                    โสด </label>
+            h1 {
+                text-align: center;
+                margin-bottom: 25px;
+                color: #444;
+            }
 
-                    <input 
-                        type="radio" 
-                        name="สถานะ" 
-                        id="taken" 
-                        value="มีแฟนแล้ว" 
-                    />
-                    <label 
-                        for="taken" 
-                        class="toggle-btn taken"
-                    >มีแฟน</label>
+            .label-heading {
+                font-weight: bold;
+                margin-bottom: 10px;
+                text-align: center;
+            }
 
-                
-                    <input 
-                        type="radio" 
-                        name="สถานะ" 
-                        id="secret" 
-                        value="???" 
-                    />
-                    <label 
-                        for="secret" 
-                        class="toggle-btn secret"
-                    >???</label>
+            /* --------- Style ปุ่มเลือกนิสิตปัจจุบัน --------- */
+            .toggle-group {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+                margin-bottom: 15px;
+            }
 
-                </div>
+            /* ซ่อนปุ่ม radio  */
+            .toggle-group input[type="radio"] {
+                display: none;
+            }
 
-            </div>
+            /* ปุ่มเลือกนิสิต default */
+            .toggle-btn {
+                display: flex;
+                flex: 1;
+                padding: 12px;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                background-color: #ffffff;
+                border: 2px solid #fc7dbc;
+                border-radius: 10px;
+                color: #ff69b4;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
 
-        </div>
+            .toggle-btn.taken {
+                border: 2px solid #6f4cee;
+                color: #6f4cee;
+            }
 
-        {/* --- ปุ่มลงทะเบียน --- */}
-        <div >
-            <button type="submit" class="btn-submit">ลงทะเบียน</button>
-        </div>
+            .toggle-btn.secret {
+                border: 2px solid #5dc0f2;
+                color: #5dc0f2;
+            }
 
-    </form>
-</main>
+            /* State: เมื่อ Radio ถูกเลือก ให้เปลี่ยนสไตล์ Label ตัวถัดไป */
+            .toggle-group input[type="radio"]:checked + .toggle-btn {
+                background-color: #fc7dbc;
+                color: white;
+                box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+            }
 
-<style>
-    
-    body {
-        /*font-family: 'Sarabun', sans-serif;*/ 
-        padding: 20px;
-        background-color: #FFF9C4; 
-        color: #333;
-    }
+            .toggle-group input[type="radio"]:checked + .toggle-btn.taken {
+                background-color: #6f4cee;
+                box-shadow: 0 4px 10px rgba(134, 71, 244, 0.4);
+            }
 
-    .flex.column {
-        display: flex;
-        flex-direction: column;
-    }
+            .toggle-group input[type="radio"]:checked + .toggle-btn.secret {
+                background-color: #5dc0f2;
+                box-shadow: 0 4px 10px #4ea0ff66;
+            }
+            /* ---------------------------------- */
 
-    .container {
-        max-width: 500px;
-        margin: 0 auto;
-        background: white;
-        padding: 25px;
-        border-radius: 16px; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
+            .form-group {
+                margin-bottom: 15px;
+                display: flex;
+                flex-direction: column;
+            }
 
-    h1 {
-        text-align: center;
-        margin-bottom: 25px;
-        color: #444;
-    }
+            label {
+                font-weight: bold;
+                margin-bottom: 5px;
+                font-size: 0.95rem;
+            }
 
-    .label-heading {
-        font-weight: bold;
-        margin-bottom: 10px;
-        text-align: center;
-    }
+            input[type="text"],
+            input[type="tel"],
+            select {
+                padding: 12px;
+                font-size: 16px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                width: 100%;
+                box-sizing: border-box;
+                background-color: #fafafa;
+            }
 
-    /* --------- Style ปุ่มเลือกนิสิตปัจจุบัน --------- */
-    .toggle-group {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        margin-bottom: 15px;
-    }
+            input:focus,
+            select:focus {
+                outline: none;
+                border-color: #ff69b4;
+                background-color: white;
+            }
 
-    /* ซ่อนปุ่ม radio  */
-    .toggle-group input[type="radio"] {
-        display: none; 
-    }
+            hr {
+                border: 0;
+                border-top: 1px solid #eee;
+                margin: 20px 0;
+            }
 
-    /* ปุ่มเลือกนิสิต default */
-    .toggle-btn {
-        display: flex;
-        flex : 1 ;
-        padding: 12px;
-        justify-content: center; 
-        align-items: center;
-        text-align: center;
-        background-color: #ffffff;
-        border: 2px solid #fc7dbc; 
-        border-radius: 10px; 
-        color: #FF69B4; 
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
+            .btn-submit {
+                background-color: #333;
+                color: white;
+                padding: 14px;
+                border: none;
+                border-radius: 1dvb;
+                width: 100%;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                margin-top: 10px;
+                transition: transform 0.1s;
+            }
+            .btn-submit:active {
+                transform: scale(0.98);
+            }
 
-    .toggle-btn.taken {
-        border: 2px solid #6f4cee; 
-        color: #6f4cee; 
-    }
+            .hidden {
+                display: none;
+            }
+        </style>
 
-    .toggle-btn.secret {
-        border: 2px solid #5dc0f2;
-        color: #5dc0f2; 
-    }
+        <script>
+            const studentRadio = document.getElementById(
+                "isStudentYes",
+            ) as HTMLInputElement;
+            const generalRadio = document.getElementById(
+                "isStudentNo",
+            ) as HTMLInputElement;
+            const studentFields = document.getElementById(
+                "studentFields",
+            ) as HTMLDivElement;
+            const studentInputs =
+                studentFields.querySelectorAll("input, select");
 
+            // console.log("Student? ",studentRadio.checked)
+            // console.log("General ?",generalRadio.checked)
 
-    /* State: เมื่อ Radio ถูกเลือก ให้เปลี่ยนสไตล์ Label ตัวถัดไป */
-    .toggle-group input[type="radio"]:checked + .toggle-btn{
-        background-color: #fc7dbc; 
-        color: white; 
-        box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
-    }
+            /* Toggle ส่วนนิสิต */
+            function toggleStudentFields() {
+                if (studentRadio.checked) {
+                    studentFields.classList.remove("hidden");
+                    studentInputs.forEach((input) =>
+                        input.setAttribute("required", "true"),
+                    );
+                } else {
+                    studentFields.classList.add("hidden");
+                    studentInputs.forEach((input) =>
+                        input.removeAttribute("required"),
+                    );
+                }
+            }
 
-    .toggle-group input[type="radio"]:checked + .toggle-btn.taken{
-        background-color: #6f4cee; 
-         box-shadow: 0 4px 10px rgba(134, 71, 244, 0.4);
-      
-    }
+            // Event Listener
+            studentRadio.addEventListener("change", toggleStudentFields);
+            generalRadio.addEventListener("change", toggleStudentFields);
 
-    .toggle-group input[type="radio"]:checked + .toggle-btn.secret{
-        background-color: #5dc0f2; 
-         box-shadow: 0 4px 10px #4ea0ff66;
-    }
-    /* ---------------------------------- */
+            // Run on load
+            toggleStudentFields();
 
-    .form-group {
-        margin-bottom: 15px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    label {
-        font-weight: bold;
-        margin-bottom: 5px;
-        font-size: 0.95rem;
-    }
-
-    input[type="text"],
-    input[type="tel"],
-    select {
-        padding: 12px;
-        font-size: 16px;
-        border: 1px solid #ddd;
-        border-radius: 8px; 
-        width: 100%;
-        box-sizing: border-box;
-        background-color: #fafafa;
-    }
-
-    input:focus, select:focus {
-        outline: none;
-        border-color: #FF69B4;
-        background-color: white;
-    }
-
-    hr {
-        border: 0;
-        border-top: 1px solid #eee;
-        margin: 20px 0;
-    }
-
-    .btn-submit {
-        background-color: #333; 
-        color: white;
-        padding: 14px;
-        border: none;
-        border-radius: 1dvb;
-        width: 100%;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: transform 0.1s;
-    }
-    .btn-submit:active {
-        transform: scale(0.98);
-    }
-
-    .hidden {
-        display: none;
-    }
-
-</style>
-
-<script>
-    
-    const studentRadio = document.getElementById('isStudentYes') as HTMLInputElement;
-    const generalRadio = document.getElementById('isStudentNo') as HTMLInputElement;
-    const studentFields = document.getElementById('studentFields') as HTMLDivElement;
-    const studentInputs = studentFields.querySelectorAll('input, select');
-    
-    // console.log("Student? ",studentRadio.checked)
-    // console.log("General ?",generalRadio.checked)
-
-    /* Toggle ส่วนนิสิต */
-    function toggleStudentFields() {
-        if (studentRadio.checked) {
-            studentFields.classList.remove('hidden');
-            studentInputs.forEach(input => input.setAttribute('required', 'true'));
-        } else {
-            studentFields.classList.add('hidden');
-            studentInputs.forEach(input => input.removeAttribute('required'));
-        }
-    }
-
-    // Event Listener
-    studentRadio.addEventListener('change', toggleStudentFields);
-    generalRadio.addEventListener('change', toggleStudentFields);
-
-    // Run on load
-    toggleStudentFields();
-
-    // Submit Handler
-    const form = document.getElementById('registerForm') as HTMLFormElement;
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        console.log("Submitting:", data);
-
-    });
-</script>
-
-</body>
+            // Submit Handler
+            const form = document.getElementById(
+                "registerForm",
+            ) as HTMLFormElement;
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                console.log("Submitting:", data);
+            });
+        </script>
+    </body>
 </html>
