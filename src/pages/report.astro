@@ -1,0 +1,495 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { actions } from "astro:actions";
+
+export const prerender = false;
+
+const result = Astro.getActionResult(actions.reportItem);
+if (result && !result.error) {
+    return Astro.redirect("/lostandfound");
+}
+---
+
+<Layout title="Report a Lost or Found Item">
+    <main
+        class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[#FFF0F3] relative overflow-hidden"
+    >
+        <!-- Background Elements -->
+        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <div
+                class="absolute -top-[10%] -right-[10%] text-[#ffe4e6] text-[20rem] opacity-60 select-none animate-pulse-slow font-quicksand"
+            >
+                ♡
+            </div>
+            <div
+                class="absolute top-[20%] -left-[5%] text-[#ffe4e6] text-[15rem] opacity-40 select-none animate-pulse-slower font-quicksand"
+            >
+                ♡
+            </div>
+            <div
+                class="absolute bottom-[10%] right-[20%] text-[#ffe4e6] text-[10rem] opacity-50 select-none font-quicksand"
+            >
+                ♡
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div
+            class="max-w-5xl w-full bg-white rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.05)] border-2 border-[#fff0f3] overflow-hidden relative z-10 flex flex-col md:flex-row transition-all duration-500"
+            id="form-card"
+        >
+            <!-- Left Panel: Visual & Upload (Desktop) / Header (Mobile) -->
+            <div
+                class="w-full md:w-5/12 bg-gradient-to-br from-[#ffe4e6] to-[#FFF0F3] p-8 md:p-12 flex flex-col justify-center items-center relative overflow-hidden transition-colors duration-500"
+                id="visual-panel"
+            >
+                <!-- Decorative Circles -->
+                <div
+                    class="absolute top-0 left-0 w-full h-full opacity-30 pointer-events-none"
+                >
+                    <div
+                        class="absolute w-64 h-64 rounded-full bg-white/40 -top-10 -left-10 blur-2xl"
+                    >
+                    </div>
+                    <div
+                        class="absolute w-40 h-40 rounded-full bg-[#FF4D6D]/10 bottom-10 right-10 blur-xl"
+                    >
+                    </div>
+                </div>
+
+                <div class="relative z-10 text-center md:text-left w-full">
+                    <h2
+                        class="text-4xl md:text-5xl font-bold text-[#5d1f3c] font-quicksand mb-3"
+                        style="text-shadow: 2px 2px 0px rgba(255, 175, 204, 0.4);"
+                        id="form-title"
+                    >
+                        Report an Item
+                    </h2>
+                    <p
+                        class="text-[#8b2f5a] font-medium mb-8 text-sm md:text-base opacity-90"
+                        id="form-subtitle"
+                    >
+                        Don't worry, love finds a way. Report it here.
+                    </p>
+
+                    <!-- Image Upload Area (Prominent) -->
+                    <div
+                        class="flex flex-col items-center justify-center w-full"
+                    >
+                        <div
+                            class="relative w-48 h-48 md:w-56 md:h-56 group cursor-pointer"
+                        >
+                            <label
+                                for="image"
+                                class="absolute inset-0 flex flex-col items-center justify-center w-full h-full rounded-[2rem] rotate-3 bg-white border-4 border-dashed border-[#ffafcc] group-hover:border-[#C9184A] group-hover:scale-105 transition-all duration-300 shadow-md group-hover:shadow-lg overflow-hidden"
+                                id="dropzone"
+                            >
+                                <div
+                                    class="flex flex-col items-center justify-center p-4 text-center transition-opacity duration-300"
+                                    id="upload-placeholder"
+                                >
+                                    <span
+                                        class="text-4xl mb-2 group-hover:scale-110 transition-transform duration-300"
+                                        >📷</span
+                                    >
+                                    <span
+                                        class="text-xs font-bold text-[#8b2f5a] uppercase tracking-wider"
+                                        >Tap to Upload Photo</span
+                                    >
+                                    <span
+                                        class="text-[0.65rem] text-[#ffb3c1] mt-1"
+                                        >(Optional)</span
+                                    >
+                                </div>
+
+                                <!-- Image Preview -->
+                                <img
+                                    id="image-preview"
+                                    src="#"
+                                    alt="Preview"
+                                    class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 z-20 pointer-events-none"
+                                />
+
+                                <input
+                                    id="image"
+                                    name="image"
+                                    type="file"
+                                    class="hidden"
+                                    accept="image/*"
+                                    onchange="previewImage(this)"
+                                />
+                            </label>
+
+                            <!-- Decorative Floating Elements -->
+                            <div
+                                class="absolute -top-3 -right-3 bg-white p-2 rounded-full shadow-md text-xl animate-bounce delay-75 z-20"
+                            >
+                                💖
+                            </div>
+                            <div
+                                class="absolute -bottom-2 -left-2 bg-white p-2 rounded-full shadow-md text-xl animate-bounce delay-300 z-20"
+                            >
+                                ✨
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Form -->
+            <div class="w-full md:w-7/12 p-8 md:p-12 bg-white">
+                {
+                    result?.error && (
+                        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+                            Error: {result.error.message}
+                        </div>
+                    )
+                }
+                <form
+                    class="space-y-6 max-w-md mx-auto"
+                    method="POST"
+                    action={actions.reportItem}
+                    enctype="multipart/form-data"
+                    id="report-form"
+                >
+                    <!-- Animated Custom Toggle Pill -->
+                    <div class="flex justify-center mb-6">
+                        <div
+                            class="bg-[#FFF0F3] p-1.5 rounded-full inline-flex relative shadow-inner"
+                        >
+                            <div
+                                class="absolute top-1.5 left-1.5 w-[calc(50%-0.375rem)] h-[calc(100%-0.75rem)] bg-white rounded-full shadow-sm transition-transform duration-300 ease-spring"
+                                id="toggle-slider"
+                            >
+                            </div>
+
+                            <label
+                                class="relative z-10 w-28 text-center cursor-pointer"
+                            >
+                                <input
+                                    type="radio"
+                                    name="type"
+                                    value="lost"
+                                    class="peer sr-only"
+                                    checked
+                                    onchange="updateTheme('lost')"
+                                />
+                                <span
+                                    class="block py-2 text-sm font-bold text-[#8b2f5a] peer-checked:text-[#C9184A] transition-colors duration-200"
+                                    >Lost</span
+                                >
+                            </label>
+                            <label
+                                class="relative z-10 w-28 text-center cursor-pointer"
+                            >
+                                <input
+                                    type="radio"
+                                    name="type"
+                                    value="found"
+                                    class="peer sr-only"
+                                    onchange="updateTheme('found')"
+                                />
+                                <span
+                                    class="block py-2 text-sm font-bold text-[#8b2f5a] peer-checked:text-[#FF4D6D] transition-colors duration-200"
+                                    >Found</span
+                                >
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Soft Pill Inputs -->
+                    <div class="space-y-6">
+                        <!-- Item Name -->
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-[#8b2f5a] ml-4 mb-2 uppercase tracking-wider"
+                                >Title</label
+                            >
+                            <div class="relative group">
+                                <input
+                                    id="title"
+                                    name="title"
+                                    type="text"
+                                    required
+                                    class="w-full px-6 py-4 rounded-2xl bg-[#FFF0F3] border-2 border-transparent text-[#5d1f3c] placeholder-[#ffc8dd] focus:outline-none focus:bg-white focus:border-[#C9184A] focus:ring-4 focus:ring-[#C9184A]/10 transition-all duration-300 shadow-sm font-semibold text-lg"
+                                    placeholder="e.g. Red Scarf"
+                                />
+                                <span
+                                    class="absolute right-5 top-4 text-2xl grayscale opacity-50 group-focus-within:grayscale-0 group-focus-within:opacity-100 transition-all"
+                                    >🧣</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Category & Time Row -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- Category -->
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-[#8b2f5a] ml-4 mb-2 uppercase tracking-wider"
+                                    >Category</label
+                                >
+                                <div class="relative group">
+                                    <select
+                                        id="category"
+                                        name="category"
+                                        class="appearance-none w-full px-6 py-4 rounded-2xl bg-[#FFF0F3] border-2 border-transparent text-[#5d1f3c] focus:outline-none focus:bg-white focus:border-[#C9184A] focus:ring-4 focus:ring-[#C9184A]/10 transition-all duration-300 shadow-sm font-semibold cursor-pointer"
+                                    >
+                                        <option value="" disabled selected
+                                            >Select...</option
+                                        >
+                                        <option value="Electronics"
+                                            >Electronics</option
+                                        >
+                                        <option value="Clothing"
+                                            >Clothing</option
+                                        >
+                                        <option value="Documents"
+                                            >Documents</option
+                                        >
+                                        <option value="Pets">Pets</option>
+                                        <option value="Keys">Keys</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <div
+                                        class="absolute right-5 top-5 pointer-events-none text-[#ffafcc] group-focus-within:text-[#C9184A] transition-colors"
+                                    >
+                                        <svg
+                                            class="w-5 h-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            ><path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path></svg
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Date & Time -->
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-[#8b2f5a] ml-4 mb-2 uppercase tracking-wider"
+                                    >Time</label
+                                >
+                                <input
+                                    id="time"
+                                    name="time"
+                                    type="datetime-local"
+                                    required
+                                    class="w-full px-6 py-4 rounded-2xl bg-[#FFF0F3] border-2 border-transparent text-[#5d1f3c] focus:outline-none focus:bg-white focus:border-[#C9184A] focus:ring-4 focus:ring-[#C9184A]/10 transition-all duration-300 shadow-sm font-semibold text-sm h-[60px]"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Location -->
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-[#8b2f5a] ml-4 mb-2 uppercase tracking-wider"
+                                >Location</label
+                            >
+                            <div class="relative group">
+                                <input
+                                    id="location"
+                                    name="location"
+                                    type="text"
+                                    required
+                                    class="w-full px-6 py-4 rounded-2xl bg-[#FFF0F3] border-2 border-transparent text-[#5d1f3c] placeholder-[#ffc8dd] focus:outline-none focus:bg-white focus:border-[#C9184A] focus:ring-4 focus:ring-[#C9184A]/10 transition-all duration-300 shadow-sm font-semibold"
+                                    placeholder="e.g. Near the Fountain"
+                                />
+                                <span
+                                    class="absolute right-5 top-4 text-2xl grayscale opacity-50 group-focus-within:grayscale-0 group-focus-within:opacity-100 transition-all"
+                                    >📍</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Details (New) -->
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-[#8b2f5a] ml-4 mb-2 uppercase tracking-wider"
+                                >Description</label
+                            >
+                            <div class="relative group">
+                                <textarea
+                                    id="description"
+                                    name="description"
+                                    rows="3"
+                                    class="w-full px-6 py-4 rounded-2xl bg-[#FFF0F3] border-2 border-transparent text-[#5d1f3c] placeholder-[#ffc8dd] focus:outline-none focus:bg-white focus:border-[#C9184A] focus:ring-4 focus:ring-[#C9184A]/10 transition-all duration-300 shadow-sm font-semibold resize-none"
+                                    placeholder="Describe the item... Any distinctive marks?"
+                                ></textarea>
+                                <span
+                                    class="absolute right-5 top-4 text-2xl grayscale opacity-50 group-focus-within:grayscale-0 group-focus-within:opacity-100 transition-all"
+                                    >📝</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <button
+                            type="submit"
+                            class="w-full py-4 px-6 rounded-full text-white bg-[#C9184A] hover:bg-[#a0123b] focus:outline-none focus:ring-4 focus:ring-[#C9184A]/30 shadow-lg shadow-[#C9184A]/30 hover:shadow-xl hover:shadow-[#C9184A]/40 hover:-translate-y-1 transition-all duration-300 font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-2"
+                            id="submit-btn"
+                        >
+                            <span>Submit Report</span>
+                            <svg
+                                class="h-5 w-5"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<script is:inline>
+    function updateTheme(status) {
+        const toggleSlider = document.getElementById("toggle-slider");
+        const submitBtn = document.getElementById("submit-btn");
+        const formTitle = document.getElementById("form-title");
+        const formSubtitle = document.getElementById("form-subtitle");
+        const visualPanel = document.getElementById("visual-panel");
+        const inputs = document.querySelectorAll(
+            'input:not([type="radio"]):not([type="file"]), select, textarea',
+        );
+
+        // Colors
+        const lostColor = "#C9184A"; // Crimson
+        const lostColorHover = "#a0123b";
+        const foundColor = "#FF4D6D"; // Rose Pink
+        const foundColorHover = "#e03e5d";
+
+        if (status === "lost") {
+            // Slider
+            toggleSlider.style.transform = "translateX(0)";
+
+            // Texts
+            formTitle.textContent = "Report an Item"; // Or "Lost Something?" per original theme. User snippet had "Report an Item". I'll keep the dynamic logic structure but maybe update text if desired.
+            formSubtitle.textContent =
+                "Don't worry, love finds a way. Report it here.";
+
+            // Visual Panel Background
+            visualPanel.classList.remove("from-[#FFF0F3]", "to-[#ffe4e6]");
+            visualPanel.classList.add("from-[#ffe4e6]", "to-[#FFF0F3]"); // Subtle shift or keep clear distinction if wanted
+
+            // Button
+            submitBtn.style.backgroundColor = lostColor;
+            submitBtn.style.boxShadow = `0 4px 15px -3px ${lostColor}4d`; // Sync with lostandfound but keep color logic
+            submitBtn.onmouseenter = () =>
+                (submitBtn.style.backgroundColor = lostColorHover);
+            submitBtn.onmouseleave = () =>
+                (submitBtn.style.backgroundColor = lostColor);
+
+            // Inputs Focus
+            inputs.forEach((input) => {
+                input.classList.remove(
+                    "focus:border-[#FF4D6D]",
+                    "focus:ring-[#FF4D6D]/10",
+                );
+                input.classList.add(
+                    "focus:border-[#C9184A]",
+                    "focus:ring-[#C9184A]/10",
+                );
+            });
+        } else {
+            // Found
+            toggleSlider.style.transform = "translateX(100%)";
+
+            // Texts
+            formTitle.textContent = "Report an Item"; // Consistent title
+            formSubtitle.textContent = "Thank you for helping reunite love!";
+
+            // Visual Panel - slightly warmer/brighter for found
+            visualPanel.classList.remove("from-[#ffe4e6]", "to-[#FFF0F3]");
+            visualPanel.classList.add("from-[#FFF0F3]", "to-[#ffc8dd]");
+
+            // Button
+            submitBtn.style.backgroundColor = foundColor;
+            submitBtn.style.boxShadow = `0 4px 15px -3px ${foundColor}4d`; // Sync with lostandfound but keep color logic
+            submitBtn.onmouseenter = () =>
+                (submitBtn.style.backgroundColor = foundColorHover);
+            submitBtn.onmouseleave = () =>
+                (submitBtn.style.backgroundColor = foundColor);
+
+            // Inputs Focus
+            inputs.forEach((input) => {
+                input.classList.remove(
+                    "focus:border-[#C9184A]",
+                    "focus:ring-[#C9184A]/10",
+                );
+                input.classList.add(
+                    "focus:border-[#FF4D6D]",
+                    "focus:ring-[#FF4D6D]/10",
+                );
+            });
+        }
+    }
+
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                const preview = document.getElementById("image-preview");
+                const placeholder =
+                    document.getElementById("upload-placeholder");
+
+                preview.src = e.target.result;
+                preview.classList.remove("opacity-0");
+                placeholder.classList.add("opacity-0");
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<style>
+    @keyframes pulse-slow {
+        0%,
+        100% {
+            opacity: 0.6;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.4;
+            transform: scale(1.05);
+        }
+    }
+
+    @keyframes pulse-slower {
+        0%,
+        100% {
+            opacity: 0.4;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.2;
+            transform: scale(1.1);
+        }
+    }
+
+    .animate-pulse-slow {
+        animation: pulse-slow 6s ease-in-out infinite;
+    }
+
+    .animate-pulse-slower {
+        animation: pulse-slower 8s ease-in-out infinite;
+    }
+
+    .ease-spring {
+        transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+</style>

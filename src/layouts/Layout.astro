@@ -2,10 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
-		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
@@ -14,8 +11,24 @@
 			content="VidLoveVidU - A romantic Valentine event experience"
 		/>
 		<title>VidLoveVidU ♡</title>
+		<link rel="stylesheet" href="/src/styles/global.css" />
+
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
+		<!-- Global Logo -->
+		<a
+			href="/"
+			class="fixed top-6 left-6 z-50 text-3xl font-bold text-[#C9184A] font-['Dancing_Script'] hover:scale-110 transition-transform drop-shadow-sm no-underline"
+		>
+			VidLoveVidU ♡
+		</a>
 		<slot />
 	</body>
 </html>
