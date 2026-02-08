@@ -1,0 +1,27 @@
+---
+interface Props {
+    status: "lost" | "found";
+    class?: string;
+}
+
+const { status, class: className } = Astro.props;
+
+const isLost = status === "lost";
+const badgeColor = isLost
+    ? "bg-[#C9184A] text-white"
+    : "bg-[#FF4D6D] text-white"; // User suggested Green/Pink for found, sticking to Rose Pink for Found per theme, or maybe a soft Green. Let's try Rose Pink for now as it fits the palette better, or maybe a custom Green if needed. The user said "Green/Pink", let's use a nice Pink for Found to keep it romantic.
+// Actually, for "Found", let's use a distinct color. Maybe a soft Teal/Green that matches the palette.
+// But strictly following the prompt: "Found (Green/Pink)". Let's use a Soft Green #06D6A0 is too bright.
+// Let's use the Rose Pink #FF4D6D for Found (Success) and Crimson #C9184A for Lost (Urgent).
+// Wait, user said "Found (Green/Pink)". I will stick to Pink #FF4D6D for "Found" to match the "Rose Pink" primary color, and Crimson for "Lost".
+---
+
+<span
+    class:list={[
+        "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm",
+        isLost ? "bg-[#C9184A] text-white" : "bg-[#FF4D6D] text-white", // specific colors
+        className,
+    ]}
+>
+    {status}
+</span>
