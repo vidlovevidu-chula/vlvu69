@@ -2,33 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import StatusBadge from "../components/StatusBadge.astro";
 
-// Mock data for now
-const items = [
-    {
-        id: 1,
-        name: "Red Scarf",
-        location: "Near Fountain",
-        date: "2026-02-14",
-        status: "lost",
-        image: null,
-    },
-    {
-        id: 2,
-        name: "Golden Locket",
-        location: "Main Hall",
-        date: "2026-02-13",
-        status: "found",
-        image: null,
-    },
-    {
-        id: 3,
-        name: "Love Note",
-        location: "Library",
-        date: "2026-02-14",
-        status: "lost",
-        image: null,
-    },
-];
+import { items } from "../data/items";
+
+export const prerender = false;
 ---
 
 <Layout>
@@ -51,34 +27,44 @@ const items = [
             <!-- Future: Search bar and toggles -->
         </div>
 
-        <div class="items-grid">
-            {
-                items.map((item) => (
-                    <div class="item-card">
-                        <div class="image-area">
-                            {item.image ? (
-                                <img src={item.image} alt={item.name} />
-                            ) : (
-                                <div class="placeholder-img">
-                                    <span class="heart-icon">♡</span>
+        {
+            items.length === 0 ? (
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>No items reported yet</h3>
+                    <p>Be the first to help someone find their love!</p>
+                </div>
+            ) : (
+                <div class="items-grid">
+                    {items.map((item) => (
+                        <div class="item-card">
+                            <div class="image-area">
+                                {item.image ? (
+                                    <img src={item.image} alt={item.name} />
+                                ) : (
+                                    <div class="placeholder-img">
+                                        <span class="heart-icon">♡</span>
+                                    </div>
+                                )}
+                                <div class="badge-wrapper">
+                                    <StatusBadge
+                                        status={item.status as "lost" | "found"}
+                                    />
                                 </div>
-                            )}
-                            <div class="badge-wrapper">
-                                <StatusBadge
-                                    status={item.status as "lost" | "found"}
-                                />
+                            </div>
+                            <div class="content">
+                                <h3>{item.name}</h3>
+                                <p class="location">📍 {item.location}</p>
+                                <p class="date">📅 {item.date}</p>
+                                <button class="details-btn">
+                                    View Details
+                                </button>
                             </div>
                         </div>
-                        <div class="content">
-                            <h3>{item.name}</h3>
-                            <p class="location">📍 {item.location}</p>
-                            <p class="date">📅 {item.date}</p>
-                            <button class="details-btn">View Details</button>
-                        </div>
-                    </div>
-                ))
-            }
-        </div>
+                    ))}
+                </div>
+            )
+        }
     </main>
 </Layout>
 
@@ -130,6 +116,23 @@ const items = [
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
         background: #ff4d6d;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #8b2f5a;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #5d1f3c;
     }
 
     .items-grid {

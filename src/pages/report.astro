@@ -2,9 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import { actions } from "astro:actions";
 
+export const prerender = false;
+
 const result = Astro.getActionResult(actions.reportItem);
 if (result && !result.error) {
-    return Astro.redirect("/");
+    return Astro.redirect("/lostandfound");
 }
 ---
 
