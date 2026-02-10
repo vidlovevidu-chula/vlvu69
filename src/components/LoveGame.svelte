@@ -252,15 +252,17 @@
         </Scene>
       </main>
     </div>
-    <pre>{JSON.stringify(
-        {
-          score: Object.fromEntries(game.mbtiScores.entries()),
-          currentSceneIndex: game.currentSceneIndex,
-          currentStepIndex: game.currentStepIndex,
-          playerName: game.playerName,
-        },
-        null,
-        2,
-      )}</pre>
+    {#if import.meta.env.DEV}
+      <pre>{JSON.stringify(
+          {
+            score: Object.fromEntries(game.mbtiScores.entries()),
+            currentSceneIndex: game.currentSceneIndex,
+            currentStepIndex: game.currentStepIndex,
+            playerName: game.playerName,
+          },
+          null,
+          2,
+        )}</pre>
+    {/if}
   {/snippet}
 </GameProvider>
