@@ -10,15 +10,15 @@
 
 <GameProvider
   gameOptions={{
-    isDebugTouchAreaVisible: true,
-    currentSceneIndex: 6,
-    playerName: "ทดสอบ",
+    isDebugTouchAreaVisible: false,
+    currentSceneIndex: -1,
+    playerName: "",
     mbtiScores: {
-      I: 1,
+      I: 0,
       E: 0,
       S: 0,
       N: 0,
-      T: 3,
+      T: 0,
       F: 0,
       J: 0,
       P: 0,
