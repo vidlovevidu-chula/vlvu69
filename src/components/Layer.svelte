@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import { twMerge } from "tailwind-merge";
+  import { getContext } from "svelte";
+  import type { GetImageResult } from "astro";
 
   const id = $props.id();
 
@@ -19,12 +21,15 @@
       ]
     >;
   } = $props();
+
+  const imageMap = getContext<Map<string, GetImageResult>>("imageMap");
+  const optimizedImage = imageMap?.get(src);
+  const optimizedImageSrc = imageMap?.get(src)?.src ?? src;
 </script>
 
 <img
-  {src}
-  width="1935"
-  height="4194"
+  {...optimizedImage?.attributes}
+  src={optimizedImageSrc}
   class={twMerge(
     "absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
     className,

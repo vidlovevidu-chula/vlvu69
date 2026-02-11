@@ -6,24 +6,46 @@
   import GameProvider from "./GameProvider.svelte";
   import Scene from "./Scene.svelte";
   import TouchArea from "./TouchArea.svelte";
+
+  const isDev = import.meta.env.DEV;
+
+  let { imageMap = $bindable() }: { imageMap?: Map<string, GetImageResult> } =
+    $props();
 </script>
 
 <GameProvider
-  gameOptions={{
-    isDebugTouchAreaVisible: false,
-    currentSceneIndex: -1,
-    playerName: "",
-    mbtiScores: {
-      I: 0,
-      E: 0,
-      S: 0,
-      N: 0,
-      T: 0,
-      F: 0,
-      J: 0,
-      P: 0,
-    },
-  }}
+  gameOptions={isDev
+    ? {
+        isDebugTouchAreaVisible: false,
+        currentSceneIndex: -1,
+        playerName: "",
+        mbtiScores: {
+          I: 3,
+          E: 0,
+          S: 0,
+          N: 0,
+          T: 0,
+          F: 1,
+          J: 0,
+          P: 0,
+        },
+      }
+    : {
+        isDebugTouchAreaVisible: false,
+        currentSceneIndex: -1,
+        playerName: "",
+        mbtiScores: {
+          I: 0,
+          E: 0,
+          S: 0,
+          N: 0,
+          T: 0,
+          F: 0,
+          J: 0,
+          P: 0,
+        },
+      }}
+  {imageMap}
 >
   {#snippet children(game)}
     <div class="h-screen bg-pink-50">
@@ -33,15 +55,10 @@
         <Scene id={-1}>
           <FadeIn class="h-full">
             <div class="-z-10">
-              <img
-                src="/01 Main Page/layer/locker.PNG"
-                class="absolute z-0 left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
-                alt=""
-              />
-              <img
+              <Layer src="/01 Main Page/layer/locker.PNG" class="z-0" />
+              <Layer
                 src="/01 Main Page/layer/id card.PNG"
-                class="absolute z-10 h-full left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
-                alt=""
+                class="h-full w-auto"
               />
             </div>
             <div class="">
@@ -122,9 +139,9 @@
         <Scene id={4}
           ><FadeIn>
             <Layer src="/04 Q-1/bg/02 ซูมเข้าโต๊ะข้าว.PNG" />
-            <LayersWithDelay delay={0}>
+            <LayersWithDelay delay={500}>
               <Layer src="/04 Q-1/text/text ฉากซูมเข้าโต๊ะข้าว.PNG" />
-              <LayersWithDelay delay={0}>
+              <LayersWithDelay delay={1000}>
                 <Layer
                   src="/03 Story scene 1/ฉาก โต๊ะข้าว/จานข้าวแก้.PNG"
                   class="z-50"
@@ -210,49 +227,51 @@
         <Scene id={6}>
           <FadeIn>
             <Layer src="/05 Q-2/bg.PNG" />
-            <LayersWithDelay delay={0}>
-              <Layer src="/05 Q-2/text and choice.PNG" />
-              <TouchArea
-                title="ที่นั่ง A"
-                top="55%"
-                height="10%"
-                width="40%"
-                left="60%"
-                onclick={() => game.addScore({ E: +3 }).nextScene()}
-              />
-              <TouchArea
-                title="ที่นั่ง B"
-                top="70%"
-                height="13%"
-                width="40%"
-                left="20%"
-                onclick={() => game.addScore({ E: +1 }).nextScene()}
-              />
-              <TouchArea
-                title="ที่นั่ง C"
-                top="87%"
-                height="13%"
-                width="35%"
-                left="16%"
-                onclick={() => game.addScore({ I: +3 }).nextScene()}
-              />
-              <TouchArea
-                title="ที่นั่ง D"
-                top="87%"
-                height="13%"
-                width="35%"
-                left="85%"
-                onclick={() => game.addScore({ I: +1 }).nextScene()}
-              />
+            <LayersWithDelay delay={2000}>
+              <FadeIn>
+                <Layer src="/05 Q-2/text and choice.PNG" />
+                <TouchArea
+                  title="ที่นั่ง A"
+                  top="55%"
+                  height="10%"
+                  width="40%"
+                  left="60%"
+                  onclick={() => game.addScore({ E: +3 }).nextScene()}
+                />
+                <TouchArea
+                  title="ที่นั่ง B"
+                  top="70%"
+                  height="13%"
+                  width="40%"
+                  left="20%"
+                  onclick={() => game.addScore({ E: +1 }).nextScene()}
+                />
+                <TouchArea
+                  title="ที่นั่ง C"
+                  top="87%"
+                  height="13%"
+                  width="35%"
+                  left="16%"
+                  onclick={() => game.addScore({ I: +3 }).nextScene()}
+                />
+                <TouchArea
+                  title="ที่นั่ง D"
+                  top="87%"
+                  height="13%"
+                  width="35%"
+                  left="85%"
+                  onclick={() => game.addScore({ I: +1 }).nextScene()}
+                />
+              </FadeIn>
             </LayersWithDelay>
           </FadeIn>
         </Scene>
         <Scene id={7}>
-          <!-- TODO -->
+          <FadeIn>"WIP"</FadeIn>
         </Scene>
       </main>
     </div>
-    {#if import.meta.env.DEV}
+    {#if isDev}
       <pre>{JSON.stringify(
           {
             score: Object.fromEntries(game.mbtiScores.entries()),

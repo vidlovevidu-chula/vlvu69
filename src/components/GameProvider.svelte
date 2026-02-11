@@ -76,19 +76,29 @@
 </script>
 
 <script lang="ts">
+  import type { GetImageResult } from "astro";
+
   import { setContext, type Snippet } from "svelte";
   import { SvelteMap } from "svelte/reactivity";
 
   interface Props {
     children?: Snippet<[typeof game]>;
     gameOptions?: Partial<ConstructorParameters<typeof GameState>[0]>;
+    imageMap?: Map<string, GetImageResult>;
   }
 
-  let { children, gameOptions = $bindable({}) }: Props = $props();
+  let {
+    children,
+    gameOptions = $bindable({}),
+    imageMap = $bindable(),
+  }: Props = $props();
 
   const game = new GameState(gameOptions);
 
   setContext("game", game);
+  if (imageMap) {
+    setContext("imageMap", imageMap);
+  }
 </script>
 
 {@render children?.(game)}

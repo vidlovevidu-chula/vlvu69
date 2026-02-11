@@ -1,8 +1,30 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import LoveGame from "../components/LoveGame.svelte";
+import { getImage } from "astro:assets";
+import type { GetImageResult } from "astro";
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/**/*.{jpeg,jpg,png,gif,webp,PNG,JPG,JPEG,GIF,WEBP}",
+);
+
+const imageMap = new Map<string, GetImageResult>();
+
+for (const path in images) {
+  const image = await images[path]();
+  const optimizedImage = await getImage({
+    src: image.default,
+    format: "webp",
+    width: 1000,
+    quality: 80,
+    fit: "contain",
+  });
+  // Key matches the current usage in Layer.svelte (e.g., "/01 Main Page/...")
+  const key = path.replace("/src/assets", "");
+  imageMap.set(key, optimizedImage);
+}
 ---
 
 <Layout>
-  <LoveGame client:load />
+  <LoveGame client:load imageMap={imageMap} />
 </Layout>

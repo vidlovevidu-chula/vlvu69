@@ -1,8 +1,10 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { GameState } from "./GameProvider.svelte";
+  import type { GetImageResult } from "astro";
 
   const game = getContext<GameState>("game");
+  const imageMap = getContext<Map<string, GetImageResult>>("imageMap");
 
   let {
     onclick = () => {
@@ -21,6 +23,10 @@
     alt?: string;
     next: "scene" | "step";
   } = $props();
+
+  const defaultSrc =
+    "/03 Story scene 1/ฉาก ปฏิทิน/text/text tap to continue.PNG";
+  const optimizedImage = imageMap?.get(defaultSrc);
 </script>
 
 <button
@@ -29,8 +35,9 @@
 >
   <span class="sr-only"> แตะเพื่อไปต่อ </span>
   <img
-    src="/03 Story scene 1/ฉาก ปฏิทิน/text/text tap to continue.PNG"
-    class="w-full"
+    {...optimizedImage?.attributes}
+    src={optimizedImage?.src}
+    class="h-full w-auto"
     alt=""
   />
 </button>
